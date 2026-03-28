@@ -843,6 +843,7 @@ img {
 }
 
 /* Google badge (post-selection) */
+.ml-google-badge[hidden] { display: none; }
 .ml-google-badge {
   display: flex;
   align-items: center;
