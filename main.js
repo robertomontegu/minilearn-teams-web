@@ -4,7 +4,7 @@
 const ML = {
   apiBase:        'https://api.minilearn.app',  // URL de tu Rails API
   appUrl:         'https://app.minilearn.app',  // URL del admin (sin barra al final)
-  googleClientId: 'REEMPLAZA_CON_TU_GOOGLE_CLIENT_ID', // Google OAuth 2.0 Client ID
+  googleClientId: '173741568676-g6bj6reb5et282ueebko1dvd6shbdrfd.apps.googleusercontent.com',
 };
 
 // ============================================================
