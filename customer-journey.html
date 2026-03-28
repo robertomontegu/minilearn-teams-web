@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniLearn Teams — Customer Journey MVP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #36c2a1;
+      --primary-soft: rgba(54,194,161,0.12);
+      --secondary: #2f8cff;
+      --secondary-soft: rgba(47,140,255,0.12);
+      --accent: #f4b74d;
+      --accent-soft: rgba(244,183,77,0.14);
+      --danger: #e05b5b;
+      --danger-soft: rgba(224,91,91,0.12);
+      --ink: #0f1b2d;
+      --muted: #546072;
+      --line: rgba(15,27,45,0.1);
+      --panel: #ffffff;
+      --bg: #f3f8ff;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      padding: 40px 24px 80px;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    .doc-header {
+      margin-bottom: 48px;
+      padding-bottom: 28px;
+      border-bottom: 2px solid var(--line);
+    }
+    .doc-header .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .doc-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .doc-header p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 65ch;
+    }
+    .doc-meta {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .doc-meta span {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      padding: 4px 12px;
+    }
+
+    /* PHASE TIMELINE */
+    .journey-overview {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+      margin-bottom: 56px;
+    }
+    .phase-pill {
+      padding: 10px 8px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .phase-pill .num { display: block; font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; }
+
+    .p1 { background: rgba(47,140,255,0.12); color: #2163b0; }
+    .p2 { background: rgba(54,194,161,0.12); color: #1d7c65; }
+    .p3 { background: rgba(244,183,77,0.16); color: #9a6e10; }
+    .p4 { background: rgba(138,100,255,0.12); color: #5a3cbf; }
+    .p5 { background: rgba(255,100,130,0.12); color: #b03050; }
+    .p6 { background: rgba(54,194,161,0.22); color: #1a6b58; }
+    .p7 { background: rgba(47,140,255,0.2); color: #1a4f9c; }
+    .p8 { background: rgba(244,183,77,0.24); color: #8a5f00; }
+
+    /* SECTION TITLE */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 56px 0 24px;
+    }
+    .section-title .badge {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .section-title h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .section-title p { color: var(--muted); font-size: 0.9rem; margin-top: 2px; }
+
+    /* PHASE CARD */
+    .phase-block {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(15,27,45,0.06);
+    }
+
+    .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .cols-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+    /* MINI CARDS */
+    .mini-card {
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid var(--line);
+    }
+    .mini-card h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--muted);
+    }
+    .mini-card ul { list-style: none; display: grid; gap: 8px; }
+    .mini-card ul li {
+      font-size: 0.88rem;
+      padding-left: 16px;
+      position: relative;
+      color: var(--ink);
+    }
+    .mini-card ul li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.5em;
+      width: 6px;
+      height: 6px;
+      border-radius: 99px;
+      background: var(--primary);
+    }
+    .mini-card.danger ul li::before { background: var(--danger); }
+    .mini-card.warning ul li::before { background: var(--accent); }
+    .mini-card.blue ul li::before { background: var(--secondary); }
+
+    /* FLOW STEPS */
+    .flow-steps {
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+      align-items: stretch;
+      margin: 20px 0;
+    }
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 16px 20px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      position: relative;
+      flex: 1;
+      min-width: 160px;
+    }
+    .flow-step + .flow-step { margin-left: 8px; }
+    .flow-step .step-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .flow-step strong { font-size: 0.9rem; }
+    .flow-step small { font-size: 0.78rem; color: var(--muted); }
+    .flow-step .tag {
+      align-self: flex-start;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 99px;
+      margin-top: 4px;
+    }
+    .tag-required { background: rgba(224,91,91,0.12); color: #b03030; }
+    .tag-optional { background: rgba(54,194,161,0.12); color: #1d7c65; }
+    .tag-auto { background: rgba(47,140,255,0.12); color: #1a4f9c; }
+
+    /* EMAIL SEQUENCE */
+    .email-row {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr auto;
+      gap: 12px 20px;
+      align-items: start;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .email-row:last-child { border-bottom: none; }
+    .email-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 99px;
+      display: grid;
+      place-items: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--secondary-soft);
+      color: var(--secondary);
+      flex-shrink: 0;
+    }
+    .email-subject { font-size: 0.88rem; font-weight: 600; }
+    .email-when { font-size: 0.8rem; color: var(--muted); }
+    .email-goal { font-size: 0.8rem; color: var(--muted); grid-column: 3; }
+    .email-trigger {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+      align-self: start;
+    }
+
+    /* STRIPE SECTION */
+    .stripe-flow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .stripe-card {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .stripe-card h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stripe-card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
+    .stripe-card code {
+      display: block;
+      background: rgba(15,27,45,0.06);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      font-family: "Courier New", monospace;
+      color: var(--ink);
+      margin-top: 8px;
+      line-height: 1.7;
+    }
+
+    /* METRICS */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .metric-card {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+    }
+    .metric-card .metric-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--secondary);
+    }
+    .metric-card .metric-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .metric-card .metric-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    /* DECISIONS */
+    .decision-row {
+      display: grid;
+      grid-template-columns: 2fr 3fr auto;
+      gap: 12px 20px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.88rem;
+    }
+    .decision-row:last-child { border-bottom: none; }
+    .decision-row strong { font-weight: 600; }
+    .decision-row span { color: var(--muted); }
+    .badge-rec {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: var(--primary-soft);
+      color: #1a7c65;
+      white-space: nowrap;
+    }
+    .badge-todo {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: var(--accent-soft);
+      color: #8a5f00;
+      white-space: nowrap;
+    }
+
+    /* PRINT / SECTION DIVIDERS */
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 40px 0;
+    }
+
+    /* HIGHLIGHTED INSIGHT */
+    .insight {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px;
+      border-radius: 14px;
+      margin: 16px 0;
+    }
+    .insight.green { background: var(--primary-soft); border: 1px solid rgba(54,194,161,0.2); }
+    .insight.blue { background: var(--secondary-soft); border: 1px solid rgba(47,140,255,0.2); }
+    .insight.yellow { background: var(--accent-soft); border: 1px solid rgba(244,183,77,0.2); }
+    .insight .icon { font-size: 1.3rem; flex-shrink: 0; }
+    .insight p { font-size: 0.88rem; color: var(--ink); }
+    .insight p strong { font-weight: 600; }
+
+    @media (max-width: 900px) {
+      .cols-3, .cols-2, .stripe-flow, .metrics-grid { grid-template-columns: 1fr; }
+      .journey-overview { grid-template-columns: repeat(4, 1fr); }
+      .decision-row { grid-template-columns: 1fr 1fr; }
+      .flow-steps { flex-direction: column; }
+      .flow-step + .flow-step { margin-left: 0; margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <p class="eyebrow">📋 Documento de producto</p>
+    <h1>Customer Journey sin roces<br>MiniLearn Teams MVP</h1>
+    <p>Mapa completo del viaje del cliente: desde que descubre la landing hasta que su equipo está usando MiniLearn de forma activa y paga. Incluye decisiones de implementación, flujo de Stripe y secuencias de email.</p>
+    <div class="doc-meta">
+      <span>Versión 1.0 — Marzo 2026</span>
+      <span>Pagos: Stripe</span>
+      <span>Backend: funcional</span>
+      <span>Stack landing: HTML/CSS/JS vanilla</span>
+    </div>
+  </div>
+
+  <!-- OVERVIEW PILLS -->
+  <div class="journey-overview">
+    <div class="phase-pill p1"><span class="num">01</span>Descubrimiento</div>
+    <div class="phase-pill p2"><span class="num">02</span>Consideración</div>
+    <div class="phase-pill p3"><span class="num">03</span>Intención</div>
+    <div class="phase-pill p4"><span class="num">04</span>Registro</div>
+    <div class="phase-pill p5"><span class="num">05</span>Onboarding</div>
+    <div class="phase-pill p6"><span class="num">06</span>Activación</div>
+    <div class="phase-pill p7"><span class="num">07</span>Retención</div>
+    <div class="phase-pill p8"><span class="num">08</span>Expansión</div>
+  </div>
+
+  <!-- ================= FASE 1 ================= -->
+  <div class="section-title">
+    <div class="badge p1" style="background:rgba(47,140,255,0.14);color:#2163b0;">01</div>
+    <div>
+      <h2>Descubrimiento</h2>
+      <p>El usuario potencial llega a la landing por primera vez</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="cols-3">
+      <div class="mini-card">
+        <h4>Canales de entrada</h4>
+        <ul>
+          <li>Búsqueda orgánica (Google SEO)</li>
+          <li>LinkedIn / redes sociales</li>
+          <li>Referido por otro usuario</li>
+          <li>Producto Hunt / comunidades SaaS</li>
+          <li>Newsletter de ops / RRHH / ventas</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Perfil del visitante (ICP)</h4>
+        <ul>
+          <li>Founder / COO / Head of Ops</li>
+          <li>Empresa 10–200 personas</li>
+          <li>Problema: onboarding caótico o repetido manualmente</li>
+          <li>Sin L&D formal en la empresa</li>
+          <li>Ya tiene documentación (Drive, Notion, SharePoint)</li>
+        </ul>
+      </div>
+      <div class="mini-card warning">
+        <h4>Roces actuales a eliminar</h4>
+        <ul>
+          <li>Sin og:image → link feo en Slack/LinkedIn</li>
+          <li>Sin favicon → falta identidad de marca</li>
+          <li>Botón "Ver demo" que no es una demo real</li>
+          <li>"Confidence: Medium" genera dudas</li>
+          <li>Iconos G / N / S en lugar de logos reales</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight yellow" style="margin-top:16px;">
+      <span class="icon">💡</span>
+      <p><strong>Acción prioritaria:</strong> Agregar og:image (1200×630px) con el hero panel del producto para que el link se vea bien al compartir. Impacto inmediato en conversión desde LinkedIn y Slack.</p>
+    </div>
+  </div>
+
+  <!-- ================= FASE 2 ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(54,194,161,0.14);color:#1d7c65;">02</div>
+    <div>
+      <h2>Consideración</h2>
+      <p>El visitante explora la propuesta de valor y evalúa si es para él</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="cols-3">
+      <div class="mini-card">
+        <h4>Secciones clave de la landing</h4>
+        <ul>
+          <li>Hero (propuesta de valor + mockup)</li>
+          <li>Problema: conocimiento disperso</li>
+          <li>Cómo funciona (6 pasos)</li>
+          <li>Casos de uso (onboarding, playbooks…)</li>
+          <li>Diferenciales (Freshness, Trazabilidad…)</li>
+          <li>Pricing</li>
+          <li>FAQ</li>
+        </ul>
+      </div>
+      <div class="mini-card danger">
+        <h4>Elementos de confianza faltantes</h4>
+        <ul>
+          <li>Ningún testimonio o cita de cliente</li>
+          <li>Ningún logo de empresa que usa el producto</li>
+          <li>Sin número social ("ya usan MiniLearn")</li>
+          <li>FAQ demasiado corto (4 preguntas)</li>
+          <li>Sin política de privacidad ni términos</li>
+        </ul>
+      </div>
+      <div class="mini-card blue">
+        <h4>Mejoras de conversión sugeridas</h4>
+        <ul>
+          <li>Video demo de 90 segundos (Loom) en el hero</li>
+          <li>1–2 testimonios de early adopters</li>
+          <li>Expandir FAQ a 8–10 preguntas</li>
+          <li>Agregar pregunta sobre seguridad de datos</li>
+          <li>Reemplazar "Confidence: Medium" por "Revisado" o "Listo"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FASE 3 ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(244,183,77,0.18);color:#9a6e10;">03</div>
+    <div>
+      <h2>Intención</h2>
+      <p>El visitante decide actuar — ¿cómo capturarlo sin fricciones?</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="insight green">
+      <span class="icon">🚨</span>
+      <p><strong>El bloqueante más crítico del MVP actual:</strong> todos los CTAs apuntan a <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;font-size:0.85em;">mailto:</code> — sin trazabilidad, sin automatización, sin captura de datos. Reemplazar esto es la mejora de mayor impacto antes de cualquier otra cosa.</p>
+    </div>
+    <div class="cols-2" style="margin-top:16px;">
+      <div class="mini-card">
+        <h4>3 CTAs a implementar</h4>
+        <ul>
+          <li><strong>Probar gratis</strong> → registro directo, plan Free, sin tarjeta</li>
+          <li><strong>Comenzar plan Basic</strong> → registro + selección de plan + Stripe Checkout</li>
+          <li><strong>Agendar demo</strong> → Cal.com o Calendly embed (flujo humano para Business)</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Principios sin roces para el CTA</h4>
+        <ul>
+          <li>Plan Free: sin tarjeta de crédito</li>
+          <li>Registro en máximo 3 campos visibles</li>
+          <li>Login con Google como opción principal</li>
+          <li>No redirigir a una página genérica — llevar directo al app con estado claro</li>
+          <li>Indicar claramente qué pasa después del click</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FASE 4 ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(138,100,255,0.14);color:#5a3cbf;">04</div>
+    <div>
+      <h2>Registro</h2>
+      <p>El usuario crea su cuenta — máximo 2 minutos, mínima fricción</p>
+    </div>
+  </div>
+  <div class="phase-block">
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <span class="step-num">Paso 1</span>
+        <strong>Método de acceso</strong>
+        <small>Google SSO o email + contraseña</small>
+        <span class="tag tag-required">Obligatorio</span>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Paso 2</span>
+        <strong>Datos mínimos</strong>
+        <small>Nombre completo + empresa</small>
+        <span class="tag tag-required">Obligatorio</span>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Paso 3a</span>
+        <strong>Plan Free</strong>
+        <small>Workspace creado — ir al app</small>
+        <span class="tag tag-auto">Sin tarjeta</span>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Paso 3b</span>
+        <strong>Plan Basic/Business</strong>
+        <small>Stripe Checkout hosteado</small>
+        <span class="tag tag-required">Con tarjeta</span>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Paso 4</span>
+        <strong>Workspace listo</strong>
+        <small>Redirect al app con bienvenida</small>
+        <span class="tag tag-auto">Automático</span>
+      </div>
+    </div>
+
+    <div class="cols-3" style="margin-top:20px;">
+      <div class="mini-card">
+        <h4>Campos del formulario</h4>
+        <ul>
+          <li><strong>Nombre completo</strong> (obligatorio)</li>
+          <li><strong>Email</strong> (obligatorio)</li>
+          <li><strong>Contraseña</strong> (solo si no usa Google)</li>
+          <li><strong>Empresa</strong> (obligatorio — para personalizar)</li>
+          <li><em>Cargo / tamaño de equipo → preguntar después en onboarding</em></li>
+        </ul>
+      </div>
+      <div class="mini-card blue">
+        <h4>Validaciones para evitar roces</h4>
+        <ul>
+          <li>Validación inline en tiempo real (no al submit)</li>
+          <li>Mostrar fortaleza de contraseña visualmente</li>
+          <li>Si email ya existe: ofrecer login, no un error genérico</li>
+          <li>Preservar el plan seleccionado en la URL</li>
+          <li>Si viene de "Basic": mostrar precios de forma clara antes de Stripe</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Post-registro: emails automáticos</h4>
+        <ul>
+          <li>Email de bienvenida inmediato (con próximos pasos)</li>
+          <li>Confirmación de cuenta (si aplica)</li>
+          <li>Para plan Free: indicar límites y cuándo upgradar</li>
+          <li>Para plan pagado: recibo de Stripe + acceso</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insight blue" style="margin-top:16px;">
+      <span class="icon">🔑</span>
+      <p><strong>Recomendación de implementación:</strong> Usar Google OAuth como opción principal (botón grande, arriba). La mayoría de los ICP de MiniLearn (founders, ops, ventas) ya viven en Google Workspace. Reduce la fricción de contraseñas y acelera mucho el tiempo de registro.</p>
+    </div>
+  </div>
+
+  <!-- ================= FASE 5 ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(255,100,130,0.12);color:#b03050;">05</div>
+    <div>
+      <h2>Onboarding</h2>
+      <p>Del workspace vacío al primer contenido — la etapa de mayor abandono</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="insight yellow">
+      <span class="icon">⚡</span>
+      <p><strong>Objetivo:</strong> Llevar al usuario al "aha moment" en menos de 10 minutos. Si el usuario conecta una fuente y ve la primera ruta generada, la probabilidad de retención se multiplica significativamente.</p>
+    </div>
+
+    <div class="flow-steps" style="margin-top:20px;">
+      <div class="flow-step">
+        <span class="step-num">Paso 1</span>
+        <strong>Bienvenida</strong>
+        <small>Pantalla con workspace nombre + 3 pasos siguientes</small>
+        <span class="tag tag-auto">30 seg</span>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Paso 2</span>
+        <strong>Conectar fuente</strong>
+        <small>Drive / Notion / SharePoint / upload manual</small>
+        <span class="tag tag-required">2 min</span>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Paso 3</span>
+        <strong>Crear primera ruta</strong>
+        <small>Wizard guiado de 4–5 preguntas</small>
+        <span class="tag tag-required">3–5 min</span>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Paso 4</span>
+        <strong>Revisar y publicar</strong>
+        <small>Aprobar o ajustar bloques</small>
+        <span class="tag tag-optional">2 min</span>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Paso 5</span>
+        <strong>Invitar equipo</strong>
+        <small>Emails de colaboradores / learners</small>
+        <span class="tag tag-optional">Puede diferirse</span>
+      </div>
+    </div>
+
+    <div class="cols-3" style="margin-top:20px;">
+      <div class="mini-card danger">
+        <h4>Causas de abandono en onboarding</h4>
+        <ul>
+          <li>Pantalla vacía sin guía (blank slate)</li>
+          <li>Demasiados pasos antes de ver el producto en acción</li>
+          <li>Conectar fuente requiere permisos complicados</li>
+          <li>El wizard hace demasiadas preguntas técnicas</li>
+          <li>Usuario no entiende qué es una "cápsula" o "ruta"</li>
+        </ul>
+      </div>
+      <div class="mini-card blue">
+        <h4>Anti-roces en el onboarding</h4>
+        <ul>
+          <li>Progress bar visible (Paso 2 de 4)</li>
+          <li>Opción de usar datos de muestra si no tiene documentos listos</li>
+          <li>Tooltips contextuales en cada campo del wizard</li>
+          <li>Invitar equipo es opcional — no bloquear el flujo</li>
+          <li>Mostrar preview de la ruta antes de publicar</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Recuperación de abandono</h4>
+        <ul>
+          <li>Email a las 2h si no conectó fuente</li>
+          <li>Email al día siguiente si no creó ruta</li>
+          <li>Email a los 3 días si no publicó nada</li>
+          <li>Mostrar progreso de onboarding al volver al app</li>
+          <li>Checklist visible en el dashboard hasta completar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FASE 6 ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(54,194,161,0.22);color:#1a6b58;">06</div>
+    <div>
+      <h2>Activación</h2>
+      <p>El momento en que el usuario realmente siente el valor del producto</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="cols-2">
+      <div>
+        <div class="mini-card" style="margin-bottom:12px;">
+          <h4>"Aha Moments" por rol</h4>
+          <ul>
+            <li><strong>Admin/Owner:</strong> Primera ruta publicada y asignada al equipo</li>
+            <li><strong>Learner:</strong> Completa la primera cápsula desde el celular en menos de 5 min</li>
+            <li><strong>Reviewer:</strong> Aprueba una ruta con trazabilidad a fuente visible</li>
+          </ul>
+        </div>
+        <div class="mini-card blue">
+          <h4>Eventos de activación a trackear</h4>
+          <ul>
+            <li><code style="font-size:0.8em;background:rgba(0,0,0,0.05);padding:1px 4px;border-radius:4px;">source_connected</code></li>
+            <li><code style="font-size:0.8em;background:rgba(0,0,0,0.05);padding:1px 4px;border-radius:4px;">route_created</code></li>
+            <li><code style="font-size:0.8em;background:rgba(0,0,0,0.05);padding:1px 4px;border-radius:4px;">route_published</code></li>
+            <li><code style="font-size:0.8em;background:rgba(0,0,0,0.05);padding:1px 4px;border-radius:4px;">route_assigned</code></li>
+            <li><code style="font-size:0.8em;background:rgba(0,0,0,0.05);padding:1px 4px;border-radius:4px;">capsule_completed</code> (learner)</li>
+            <li><code style="font-size:0.8em;background:rgba(0,0,0,0.05);padding:1px 4px;border-radius:4px;">route_completed</code> (learner)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mini-card" style="height:100%;">
+        <h4>Definición de "usuario activado"</h4>
+        <ul style="margin-bottom:16px;">
+          <li>Ha conectado al menos 1 fuente</li>
+          <li>Ha publicado al menos 1 ruta</li>
+          <li>Al menos 1 learner ha completado al menos 1 cápsula</li>
+        </ul>
+        <h4 style="margin-top:16px;">Ventana de activación objetivo</h4>
+        <ul>
+          <li>Free: activarse dentro de los primeros 7 días</li>
+          <li>Basic: activarse dentro de las primeras 48h (pagó — mayor urgencia)</li>
+          <li>Business: onboarding asistido, activación en primera semana</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FASE 7 ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(47,140,255,0.2);color:#1a4f9c;">07</div>
+    <div>
+      <h2>Retención</h2>
+      <p>Mantener al usuario comprometido semana a semana</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="cols-3">
+      <div class="mini-card">
+        <h4>Loops de hábito (admin)</h4>
+        <ul>
+          <li>Alerta cuando cambia un documento fuente → revisar ruta</li>
+          <li>Reporte semanal de completitud del equipo</li>
+          <li>Sugerencias de nuevos temas entrenables</li>
+          <li>Notificación cuando un learner completa una ruta</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>Loops de hábito (learner)</h4>
+        <ul>
+          <li>Notificación de nueva ruta asignada</li>
+          <li>Recordatorio si lleva más de 3 días sin continuar</li>
+          <li>Confirmación visual de progreso ("completaste 3 de 5 módulos")</li>
+          <li>Certificado o badge al completar (opcional)</li>
+        </ul>
+      </div>
+      <div class="mini-card warning">
+        <h4>Señales de churn temprano</h4>
+        <ul>
+          <li>No publicó ninguna ruta en los primeros 14 días</li>
+          <li>Ningún learner ha completado nada en 30 días</li>
+          <li>Sin login del admin en los últimos 14 días</li>
+          <li>Fuente desconectada sin reconectar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FASE 8 ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(244,183,77,0.24);color:#8a5f00;">08</div>
+    <div>
+      <h2>Expansión</h2>
+      <p>Conversión Free → Basic y upsell a Business</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="cols-2">
+      <div class="mini-card">
+        <h4>Triggers de upgrade Free → Basic</h4>
+        <ul>
+          <li>Intenta publicar la 2ª ruta del mes (límite Free)</li>
+          <li>Intenta conectar Drive / Notion / SharePoint (solo Basic)</li>
+          <li>Quiere agregar evaluaciones a una ruta</li>
+          <li>Supera 5 usuarios activos</li>
+          <li>Lleva 30 días activo en Free (oportunidad de conversión)</li>
+        </ul>
+      </div>
+      <div class="mini-card blue">
+        <h4>Triggers de upgrade Basic → Business</h4>
+        <ul>
+          <li>Supera 3 rutas publicadas en el mes</li>
+          <li>Equipo supera 100 usuarios activos</li>
+          <li>Necesita automatizaciones o analytics avanzados</li>
+          <li>Quiere versionado completo o freshness avanzado</li>
+          <li>Quiere soporte prioritario</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight green" style="margin-top:16px;">
+      <span class="icon">💳</span>
+      <p><strong>Gestión self-service con Stripe:</strong> Usar el <strong>Stripe Customer Portal</strong> para que el usuario pueda upgradar, downgradar, cambiar tarjeta y cancelar sin intervención manual. Reduce soporte y da confianza al comprador B2B.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ================= STRIPE INTEGRATION ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:#635bff;color:#fff;">💳</div>
+    <div>
+      <h2>Integración Stripe</h2>
+      <p>Diseño de la capa de pagos para el MVP</p>
+    </div>
+  </div>
+  <div class="phase-block">
+
+    <div class="stripe-flow">
+      <div class="stripe-card">
+        <h4>🛒 Stripe Checkout (nuevo cliente)</h4>
+        <p>Para registro de planes Basic y Business. El usuario completa el pago en una página hosteada por Stripe — sin PCI ni formularios propios.</p>
+        <code>
+POST /api/create-checkout-session<br>
+→ priceId (Basic o Business)<br>
+→ userId / email<br>
+→ trial_period_days: 14 (opcional)<br>
+→ success_url: /app/onboarding<br>
+→ cancel_url: /pricing<br>
+        </code>
+      </div>
+      <div class="stripe-card">
+        <h4>🔄 Webhooks (sincronización)</h4>
+        <p>Para mantener sincronizado el estado de la suscripción entre Stripe y tu backend.</p>
+        <code>
+checkout.session.completed<br>
+→ activar plan en DB<br><br>
+invoice.payment_succeeded<br>
+→ renovar acceso<br><br>
+customer.subscription.deleted<br>
+→ downgrade a Free<br><br>
+invoice.payment_failed<br>
+→ notificar + gracia 3 días
+        </code>
+      </div>
+      <div class="stripe-card">
+        <h4>⚙️ Stripe Customer Portal</h4>
+        <p>Self-service completo para el cliente sin código extra de tu parte.</p>
+        <code>
+POST /api/create-portal-session<br>
+→ customerId<br>
+→ return_url: /app/settings/billing<br><br>
+Permite al usuario:<br>
+- Cambiar plan<br>
+- Actualizar tarjeta<br>
+- Cancelar / pausar<br>
+- Ver historial de facturas
+        </code>
+      </div>
+      <div class="stripe-card">
+        <h4>🧪 Modo trial (recomendado)</h4>
+        <p>Ofrecer 14 días gratis en planes pagados para reducir fricción en la conversión.</p>
+        <code>
+// Al crear la suscripción:<br>
+trial_period_days: 14<br><br>
+// En la UI mostrar:<br>
+"14 días gratis.<br>
+ Sin cargo hasta [fecha].<br>
+ Cancelá cuando quieras."<br><br>
+// Email recordatorio a -3 días
+        </code>
+      </div>
+    </div>
+
+    <div class="decision-row" style="margin-top:24px;font-size:0.85rem;color:var(--muted);font-weight:600;padding-top:0;">
+      <span>Decisión</span><span>Recomendación</span><span style="text-align:right;">Estado</span>
+    </div>
+    <div class="decision-row">
+      <strong>¿Pedir tarjeta para Free?</strong>
+      <span>No. El plan Free no requiere tarjeta. Reduce la fricción de entrada y el volumen de usuarios free es señal de tracción.</span>
+      <span class="badge-rec">Recomendado</span>
+    </div>
+    <div class="decision-row">
+      <strong>¿Ofrecer trial en planes pagados?</strong>
+      <span>Sí, 14 días. Permite que el usuario sienta el valor antes de comprometerse. Requiere capturar tarjeta al inicio del trial.</span>
+      <span class="badge-rec">Recomendado</span>
+    </div>
+    <div class="decision-row">
+      <strong>¿Facturación mensual o anual?</strong>
+      <span>Empezar solo con mensual para el MVP. Agregar anual con descuento (20%) cuando haya tracción y users con intención de permanencia.</span>
+      <span class="badge-todo">Fase 2</span>
+    </div>
+    <div class="decision-row">
+      <strong>¿Stripe Tax para IVA/impuestos?</strong>
+      <span>Habilitar Stripe Tax para cumplimiento automático en LATAM y España desde el inicio. Se configura en el dashboard de Stripe, sin código.</span>
+      <span class="badge-rec">Recomendado</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ================= EMAIL SEQUENCE ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(54,194,161,0.14);color:#1d7c65;">📧</div>
+    <div>
+      <h2>Secuencia de emails automáticos</h2>
+      <p>Flujo mínimo para el MVP — implementable con cualquier proveedor (Resend, Postmark, etc.)</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="email-row">
+      <div class="email-num">1</div>
+      <div>
+        <div class="email-subject">Bienvenido a MiniLearn Teams — primeros pasos</div>
+        <div class="email-when">Inmediato tras registro</div>
+      </div>
+      <div class="email-goal">Explicar qué hacer primero. Link directo al wizard de onboarding.</div>
+      <span class="email-trigger" style="background:var(--primary-soft);color:#1a7c65;">Todos</span>
+    </div>
+    <div class="email-row">
+      <div class="email-num">2</div>
+      <div>
+        <div class="email-subject">¿Ya conectaste tu primera fuente?</div>
+        <div class="email-when">+2h si no conectó fuente</div>
+      </div>
+      <div class="email-goal">Recordar el paso más importante. Ofrecer guía paso a paso.</div>
+      <span class="email-trigger" style="background:var(--accent-soft);color:#8a5f00;">Si incompleto</span>
+    </div>
+    <div class="email-row">
+      <div class="email-num">3</div>
+      <div>
+        <div class="email-subject">Tu primera ruta puede estar lista en 10 minutos</div>
+        <div class="email-when">+24h si no creó ruta</div>
+      </div>
+      <div class="email-goal">Bajar la percepción de esfuerzo. Mostrar el resultado final (ruta de muestra).</div>
+      <span class="email-trigger" style="background:var(--accent-soft);color:#8a5f00;">Si incompleto</span>
+    </div>
+    <div class="email-row">
+      <div class="email-num">4</div>
+      <div>
+        <div class="email-subject">Tu workspace MiniLearn sigue esperando</div>
+        <div class="email-when">+3 días si no publicó nada</div>
+      </div>
+      <div class="email-goal">Re-engagement. Ofrecer demo 1:1 o soporte. Para Free: mencionar el límite de 30 días.</div>
+      <span class="email-trigger" style="background:var(--accent-soft);color:#8a5f00;">Si incompleto</span>
+    </div>
+    <div class="email-row">
+      <div class="email-num">5</div>
+      <div>
+        <div class="email-subject">Tu equipo completó su primera ruta 🎉</div>
+        <div class="email-when">Al completar primer route_completed</div>
+      </div>
+      <div class="email-goal">Celebrar el aha moment. Sugerir próxima ruta a crear.</div>
+      <span class="email-trigger" style="background:var(--primary-soft);color:#1a7c65;">Activación</span>
+    </div>
+    <div class="email-row">
+      <div class="email-num">6</div>
+      <div>
+        <div class="email-subject">Tu prueba gratuita termina en 3 días</div>
+        <div class="email-when">-3 días al vencimiento del trial (solo planes pagados)</div>
+      </div>
+      <div class="email-goal">Urgencia suave. Mostrar qué perderían al bajar a Free. Link directo al billing.</div>
+      <span class="email-trigger" style="background:rgba(47,140,255,0.12);color:#1a4f9c;">Trial</span>
+    </div>
+    <div class="email-row">
+      <div class="email-num">7</div>
+      <div>
+        <div class="email-subject">Resumen semanal de tu equipo</div>
+        <div class="email-when">Cada lunes, solo si hay actividad</div>
+      </div>
+      <div class="email-goal">Loop de retención para el admin. Mostrar rutas completadas, learners activos.</div>
+      <span class="email-trigger" style="background:var(--primary-soft);color:#1a7c65;">Retención</span>
+    </div>
+    <div class="email-row">
+      <div class="email-num">8</div>
+      <div>
+        <div class="email-subject">Un documento fuente cambió — revisar ruta "Onboarding SDR"</div>
+        <div class="email-when">Trigger: cambio detectado en documento fuente</div>
+      </div>
+      <div class="email-goal">Loop de Freshness. Mantener al admin comprometido con la calidad del contenido.</div>
+      <span class="email-trigger" style="background:rgba(47,140,255,0.12);color:#1a4f9c;">Evento</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ================= MÉTRICAS ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(47,140,255,0.14);color:#2163b0;">📊</div>
+    <div>
+      <h2>Métricas clave por fase</h2>
+      <p>KPIs mínimos para medir la salud del journey desde el día 1</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-name">Visita → Registro</div>
+        <div class="metric-value" style="color:var(--secondary);">3–5%</div>
+        <div class="metric-label">Tasa de conversión objetivo para landing B2B SaaS</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">Registro → Activado</div>
+        <div class="metric-value" style="color:var(--primary);">40%</div>
+        <div class="metric-label">Publicó al menos 1 ruta dentro de 7 días</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">Free → Basic</div>
+        <div class="metric-value" style="color:var(--accent);">15%</div>
+        <div class="metric-label">Conversión a plan pagado (referencia: Notion, Slack ≈10–20%)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">Churn mensual</div>
+        <div class="metric-value" style="color:var(--danger);">&lt;5%</div>
+        <div class="metric-label">Objetivo para SaaS B2B early stage</div>
+      </div>
+    </div>
+
+    <div class="cols-2" style="margin-top:16px;">
+      <div class="mini-card">
+        <h4>Métricas de activación</h4>
+        <ul>
+          <li>Tiempo promedio hasta primera ruta publicada</li>
+          <li>% usuarios que conectaron fuente en las primeras 24h</li>
+          <li>% usuarios que invitaron al menos 1 learner</li>
+          <li>% learners que completaron al menos 1 cápsula</li>
+        </ul>
+      </div>
+      <div class="mini-card blue">
+        <h4>Métricas de producto (PostHog recomendado)</h4>
+        <ul>
+          <li>Funnel: visita → registro → onboarding → activación</li>
+          <li>Session replay de los primeros 5 min en el app</li>
+          <li>Heatmap en la landing (qué secciones leen más)</li>
+          <li>Feature flags para A/B de CTAs y pricing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ================= ROADMAP ================= -->
+  <div class="section-title">
+    <div class="badge" style="background:rgba(138,100,255,0.14);color:#5a3cbf;">🗺️</div>
+    <div>
+      <h2>Roadmap de implementación</h2>
+      <p>Priorización sugerida para tener un journey funcional lo antes posible</p>
+    </div>
+  </div>
+  <div class="phase-block">
+    <div class="cols-3">
+      <div class="mini-card" style="border-top:3px solid var(--danger);">
+        <h4 style="color:var(--danger);">🔴 Bloquers críticos</h4>
+        <ul>
+          <li>Reemplazar todos los mailto: por formulario/login</li>
+          <li>Agregar Google OAuth al registro</li>
+          <li>Conectar Stripe Checkout (Basic y Business)</li>
+          <li>Implementar webhooks de Stripe en el backend</li>
+          <li>Agregar analytics (PostHog o GA4) en la landing</li>
+        </ul>
+      </div>
+      <div class="mini-card" style="border-top:3px solid var(--accent);">
+        <h4 style="color:#9a6e10;">🟡 Mejoras importantes</h4>
+        <ul>
+          <li>og:image + favicon para la landing</li>
+          <li>Wizard de onboarding en el app (5 pasos)</li>
+          <li>Secuencia de emails automática (emails 1–4)</li>
+          <li>Stripe Customer Portal para billing self-service</li>
+          <li>Checklist de onboarding visible en el dashboard</li>
+        </ul>
+      </div>
+      <div class="mini-card" style="border-top:3px solid var(--primary);">
+        <h4 style="color:#1d7c65;">🟢 Mejoras de conversión</h4>
+        <ul>
+          <li>Video demo de 90 seg (Loom) en el hero</li>
+          <li>1–2 testimonios de early adopters en la landing</li>
+          <li>FAQ expandido (8–10 preguntas)</li>
+          <li>Logo de clientes o "ya lo usan X empresas"</li>
+          <li>Página de pricing dedicada (para SEO y claridad)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;padding:20px;border-radius:14px;background:var(--primary-soft);border:1px solid rgba(54,194,161,0.2);text-align:center;">
+    <p style="font-size:0.88rem;color:var(--ink);">
+      <strong>Siguiente paso sugerido:</strong> Implementar el flujo de registro con Google OAuth + Stripe Checkout para el plan Basic.<br>
+      Una vez que ese flujo funcione end-to-end, tienes un MVP comercializable real.
+    </p>
+  </div>
+
+</div>
+</body>
+</html>

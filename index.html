@@ -18,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
+    <!-- Google Identity Services (para OAuth) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
     <div class="site-shell">
@@ -41,7 +43,7 @@
         </nav>
         <div class="topbar-actions">
           <a class="button button-ghost" href="#pricing">Ver planes</a>
-          <a class="button button-primary" href="#contact">Probar gratis</a>
+          <a class="button button-primary" href="#" data-register="free">Probar gratis</a>
         </div>
       </header>
 
@@ -56,8 +58,8 @@
               listas para asignar y completar desde el celular.
             </p>
             <div class="hero-actions">
-              <a class="button button-primary" href="#contact">Probar gratis</a>
-              <a class="button button-ghost" href="#how-it-works">Ver demo</a>
+              <a class="button button-primary" href="#" data-register="free">Probar gratis</a>
+              <a class="button button-ghost" href="#how-it-works">Ver cómo funciona</a>
             </div>
             <ul class="hero-pills">
               <li>Detecta temas automaticamente</li>
@@ -374,7 +376,7 @@
                 <li>Sin evaluaciones</li>
                 <li>Analytics basicos</li>
               </ul>
-              <a class="button button-outline" href="#contact">Empezar gratis</a>
+              <a class="button button-outline" href="#" data-register="free">Empezar gratis</a>
             </article>
 
             <article class="pricing-card pricing-card-featured reveal reveal-delay-1">
@@ -393,7 +395,7 @@
                 <li>Review y publicacion</li>
                 <li>Alertas de cambios de fuente</li>
               </ul>
-              <a class="button button-primary" href="#contact">Comenzar plan Basic</a>
+              <a class="button button-primary" href="#" data-register="basic">Comenzar plan Basic</a>
             </article>
 
             <article class="pricing-card reveal reveal-delay-2">
@@ -411,7 +413,7 @@
                 <li>Versionado y freshness mas completo</li>
                 <li>Soporte prioritario</li>
               </ul>
-              <a class="button button-outline" href="#contact">Hablar con ventas</a>
+              <a class="button button-outline" href="#" data-register="business">Comenzar plan Business</a>
             </article>
           </div>
         </section>
@@ -466,8 +468,8 @@
               </p>
             </div>
             <div class="cta-actions">
-              <a class="button button-primary" href="mailto:hola@minilearn.app?subject=Quiero%20probar%20MiniLearn%20Teams">Crear workspace gratis</a>
-              <a class="button button-ghost" href="mailto:hola@minilearn.app?subject=Quiero%20agendar%20una%20demo%20de%20MiniLearn%20Teams">Agendar demo</a>
+              <a class="button button-primary" href="#" data-register="free">Crear workspace gratis</a>
+              <a class="button button-ghost" href="#" data-register="basic">Empezar con Basic</a>
             </div>
           </div>
         </section>
@@ -479,6 +481,86 @@
         <p>&copy; <span id="year"></span> MiniLearn</p>
       </footer>
     </div>
+
+    <!-- ============================================================
+         MODAL DE REGISTRO
+         ============================================================ -->
+    <dialog id="ml-modal" class="ml-modal" aria-label="Crear workspace en MiniLearn Teams">
+      <div class="ml-modal__box">
+
+        <!-- Header -->
+        <div class="ml-modal__header">
+          <div>
+            <div class="ml-modal__plan-row">
+              <span class="eyebrow" style="margin:0;">MiniLearn Teams</span>
+              <span class="ml-modal__plan">Free</span>
+            </div>
+            <h3 class="ml-modal__title">Crea tu workspace</h3>
+            <p class="ml-modal__note">Sin tarjeta de crédito.</p>
+          </div>
+          <button class="ml-modal__close" type="button" onclick="closeRegister()" aria-label="Cerrar">✕</button>
+        </div>
+
+        <!-- Google Sign-In -->
+        <div class="ml-google-section">
+          <div id="ml-google-btn" class="ml-google-container"></div>
+        </div>
+
+        <!-- Google badge (visible tras seleccionar Google) -->
+        <div class="ml-google-badge" hidden>
+          <span>✓ Autenticando con Google</span>
+          <button type="button" onclick="resetGoogleSelection()">Cambiar</button>
+        </div>
+
+        <!-- Divider -->
+        <div class="ml-divider"><span>o con email</span></div>
+
+        <!-- Error -->
+        <div id="ml-error" class="ml-error" hidden></div>
+
+        <!-- Formulario -->
+        <form id="ml-form" novalidate autocomplete="on">
+          <div class="ml-field">
+            <label for="ml-name">Nombre completo</label>
+            <input id="ml-name" name="name" type="text"
+              placeholder="Ana García"
+              autocomplete="name" required />
+          </div>
+          <div class="ml-field">
+            <label for="ml-email">Email de trabajo</label>
+            <input id="ml-email" name="email" type="email"
+              placeholder="ana@empresa.com"
+              autocomplete="email" required />
+          </div>
+          <div class="ml-field ml-field--password">
+            <label for="ml-password">
+              Contraseña
+              <span class="ml-field__hint">mínimo 8 caracteres</span>
+            </label>
+            <input id="ml-password" name="password" type="password"
+              placeholder="••••••••"
+              autocomplete="new-password" required minlength="8" />
+          </div>
+          <div class="ml-field">
+            <label for="ml-workspace">Nombre de tu empresa</label>
+            <input id="ml-workspace" name="workspace_name" type="text"
+              placeholder="Empresa S.A."
+              autocomplete="organization" required />
+          </div>
+          <button id="ml-submit" type="submit" class="button button-primary" style="width:100%;margin-top:8px;">
+            Crear workspace gratis
+          </button>
+        </form>
+
+        <!-- Footer legal -->
+        <p class="ml-modal__footer">
+          Al crear tu cuenta aceptás los
+          <a href="/terms" target="_blank" rel="noopener">Términos de uso</a> y la
+          <a href="/privacy" target="_blank" rel="noopener">Política de privacidad</a>.
+        </p>
+
+      </div>
+    </dialog>
 
     <script src="./main.js"></script>
   </body>
